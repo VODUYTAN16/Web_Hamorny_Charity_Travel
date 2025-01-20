@@ -12,6 +12,7 @@
     <main>
       <RatingComponent></RatingComponent>
       <Project></Project>
+      <TourSection></TourSection>
       <Footer></Footer>
     </main>
   </div>
@@ -24,6 +25,7 @@ import Footer from '@/components/Footer.vue';
 import Project from '@/components/Project.vue';
 import PdfViewer from '@/components/PdfViewer.vue';
 import RatingComponent from '@/components/RatingComponent.vue';
+import TourSection from '@/components/TourSection.vue';
 </script>
 
 <style scoped>

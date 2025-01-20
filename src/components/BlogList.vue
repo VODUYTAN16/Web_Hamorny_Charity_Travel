@@ -189,12 +189,12 @@ async function deleteBlog(postId, postContentId) {
     const response = await axios.delete(
       `/api/posts/${postId}/contents/${postContentId}`
     );
+    fetchBlog(); // Hàm cập nhật danh sách bài đăng
 
     // Kiểm tra phản hồi từ API
     if (response.status === 200) {
       console.log(response.data.message);
       // Thực hiện cập nhật giao diện (ví dụ: xóa bài đăng khỏi danh sách hiện tại)
-      fetchBlog(); // Hàm cập nhật danh sách bài đăng
     }
   } catch (error) {
     // Xử lý lỗi

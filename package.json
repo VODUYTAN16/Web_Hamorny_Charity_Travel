@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
     "axios": "^1.7.9",
     "bootstrap": "^5.3.3",
     "cors": "^2.8.5",
@@ -18,8 +19,10 @@
     "google-auth-library": "^9.15.0",
     "mysql2": "^3.11.5",
     "pdfjs-dist": "^4.9.155",
+    "v-calendar": "^3.1.2",
     "vue": "^3.5.13",
-    "vue-router": "^4.4.5"
+    "vue-router": "^4.4.5",
+    "vue-screen-utils": "^1.0.0-beta.13"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",

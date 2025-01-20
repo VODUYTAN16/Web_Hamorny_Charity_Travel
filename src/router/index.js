@@ -10,6 +10,7 @@ import BlogDetail from '@/components/BlogDetail.vue';
 import BlogForm from '@/components/BlogForm.vue';
 import Sign_In_And_Out from '@/views/Sign_In_And_Out.vue';
 import FileViewer from '@/components/FileViewer.vue';
+import TourDetail from '@/views/TourDetail.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -47,6 +48,10 @@ const router = createRouter({
       path: '/view-file/:id', // Chúng ta sẽ truyền tham số fileId
       name: 'FileViewer',
       component: FileViewer,
+    },
+    {
+      path: '/TourDetail/:tourid',
+      component: TourDetail,
     },
   ],
   scrollBehavior(to, from, savedPosition) {
