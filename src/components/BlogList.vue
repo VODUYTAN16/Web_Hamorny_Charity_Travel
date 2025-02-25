@@ -165,6 +165,7 @@ const fetchBlog = async () => {
       })
       .then((response) => {
         blogs.value = response.data; // Gán dữ liệu vào blogs
+        console.log(blogs.value);
       })
       .catch((error) => {
         console.error('Error fetching blogs:', error);
