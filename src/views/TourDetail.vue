@@ -898,6 +898,7 @@ const fetchTourService = async (tourid) => {
 const groupedServices = () => {
   return services.value.reduce((acc, service) => {
     const status = service.Status;
+    console.log(status);
     if (!acc[status]) acc[status] = [];
     acc[status].push(service);
     return acc;

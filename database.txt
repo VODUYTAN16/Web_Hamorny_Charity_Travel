@@ -27,7 +27,7 @@ CREATE TABLE posts (
 CREATE TABLE post_content (
     id INT AUTO_INCREMENT PRIMARY KEY,
     post_id INT NOT NULL,
-     image_url VARCHAR(2055) DEFAULT NULL,
+     image_url TEXT DEFAULT NULL,
     title VARCHAR(255) NOT NULL,
     subtitle VARCHAR(255) DEFAULT NULL,
     content_intro TEXT DEFAULT NULL,
