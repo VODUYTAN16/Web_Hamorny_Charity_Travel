@@ -18,7 +18,6 @@
     <main>
       <BlogList></BlogList>
       <PdfViewer></PdfViewer>
-      <BlogForm v-if="formData.admin"></BlogForm>
       <Footer></Footer>
     </main>
   </div>

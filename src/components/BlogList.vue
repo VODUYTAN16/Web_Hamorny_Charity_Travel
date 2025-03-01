@@ -10,22 +10,15 @@
         >
           <div class="blog_card">
             <Actical_card
-              :image="blog.image_url"
-              :title="blog.title"
-              :description="blog.content_intro.slice(0, 100) + '...'"
-              :author="blog.author"
-              :authorAvatar="blog.authorAvatar"
-              :views="blog.views"
-              :id="blog.id"
-              :create_at="blog.created_at"
+              :image="blog.ImageUrl"
+              :title="blog.Title"
+              :description="blog.ContentIntro.slice(0, 100) + '...'"
+              :author="blog.Author"
+              :authorAvatar="blog.AuthorAvatar"
+              :views="blog.Views"
+              :id="blog.PostID"
+              :create_at="blog.CreatedAt"
             ></Actical_card>
-            <button
-              v-if="formData.admin"
-              class="btn btn-link text-danger p-0 mt-2"
-              @click="deleteBlog(blog.id, blog.post_content_id)"
-            >
-              <i class="fa-solid fa-rectangle-xmark fs-5"></i>
-            </button>
           </div>
         </div>
       </div>
@@ -174,47 +167,11 @@ const fetchBlog = async () => {
     console.error('Error fetching blog:', error);
   }
 };
-
-async function deleteBlog(postId, postContentId) {
-  try {
-    // Hiển thị thông báo xác nhận trước khi xóa
-    const isConfirmed = confirm(
-      'Are you sure you want to delete this blog post and its content?'
-    );
-    if (!isConfirmed) {
-      console.log('Deletion canceled by user.');
-      return;
-    }
-
-    // Gửi yêu cầu DELETE đến API
-    const response = await axios.delete(
-      `/api/posts/${postId}/contents/${postContentId}`
-    );
-    fetchBlog(); // Hàm cập nhật danh sách bài đăng
-
-    // Kiểm tra phản hồi từ API
-    if (response.status === 200) {
-      console.log(response.data.message);
-      // Thực hiện cập nhật giao diện (ví dụ: xóa bài đăng khỏi danh sách hiện tại)
-    }
-  } catch (error) {
-    // Xử lý lỗi
-    if (error.response) {
-      // Lỗi từ phía server
-      console.error(error.response.data.message);
-      alert(error.response.data.message); // Hiển thị thông báo lỗi
-    } else {
-      // Lỗi không xác định (kết nối hoặc vấn đề khác)
-      console.error('Error deleting blog:', error.message);
-      alert('Something went wrong. Please try again later.');
-    }
-  }
-}
 </script>
 
 <style scoped>
 .blog_list {
-  background-color: #b3d5ed;
+  background-color: #4f92bf;
   padding: 20px 0;
   margin-left: auto;
   margin-right: auto;

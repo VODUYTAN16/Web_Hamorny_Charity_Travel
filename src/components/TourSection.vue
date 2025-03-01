@@ -25,7 +25,9 @@ const props = defineProps({});
 const fetchTours = async () => {
   try {
     const response = await axios.get(`/api/tour`);
-    tours.value = response.data;
+    console.log(response.data);
+    tours.value = response.data.filter((tour) => tour.IsDeleted == 0).reverse();
+    console.log(tours.value);
   } catch (error) {
     console.error('Error fetching tour:', error);
   }

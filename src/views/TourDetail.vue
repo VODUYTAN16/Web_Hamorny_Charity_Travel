@@ -12,8 +12,8 @@
     </header>
     <div class="card-box">
       <div class="card text-center card-booking">
-        <h1 class="Card-title">${{ tour.Price }}</h1>
-        <h6>deposit ${{ tour.Price * 0.3 }}</h6>
+        <h1 class="Card-title">${{ parseFloat(tour.Price).toFixed(2) }}</h1>
+        <h6>deposit ${{ parseFloat(tour.Price * 0.3).toFixed(2) }}</h6>
         <hr />
         <div class="btn btn-success" @click="openPopup">Book Now</div>
         <hr />
@@ -851,6 +851,8 @@ const fetchTourSchedule = async (tourid) => {
     const response = await axios.get(`/api/tour/${tourid}/schedule`);
     schedules.value = response.data;
 
+    console.log(response.data);
+
     minDate = new Date(
       Math.min(...schedules.value.map((item) => new Date(item.StartDate)))
     );
@@ -987,6 +989,8 @@ const createBooking = async () => {
       console.log('Booking created successfully:');
       alert('Book Tour successfully');
       location.reload();
+    } else {
+      alert('Booking Failed');
     }
   } catch (error) {
     console.error(
