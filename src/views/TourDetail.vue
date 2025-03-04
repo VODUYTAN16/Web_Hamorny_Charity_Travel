@@ -78,6 +78,8 @@
                         :disabled-dates="allDisabledDates"
                         :min-date="minDate"
                         :max-date="maxDate"
+                        initial-page="initial_page"
+                        :key="initial_page.month + '-' + initial_page.year"
                         v-model="selectedDate"
                         @dayclick="
                           removeSevenDaysAfterSelectedDate($event.date)
@@ -235,6 +237,7 @@
                             type="email"
                             class="form-control"
                             placeholder="Confirm Email"
+                            @paste.prevent
                             required
                           />
                         </div>
@@ -666,7 +669,11 @@ const datesPicked = computed(() => {
 const disabledDates = async () => {
   // Tạo một mảng chứa tất cả các ngày cần vô hiệu hóa
 
-  for (let d = new Date(minDate); d <= maxDate; d.setDate(d.getDate() + 1)) {
+  for (
+    let d = new Date(minDate.value);
+    d <= maxDate.value;
+    d.setDate(d.getDate() + 1)
+  ) {
     let currentDate = new Date(d);
     // Kiểm tra xem ngày hiện tại có nằm trong danh sách các ngày được phép không
     if (
@@ -685,7 +692,11 @@ const disabledDates = async () => {
 
 const selectedDate = ref();
 
+const initial_page = ref({ month: null, year: null });
+
 const openPopup = () => {
+  initial_page.month = minDate.value.getMonth();
+  initial_page.year = minDate.value.getFullYear();
   const modal = new bootstrap.Modal(document.getElementById('bookingPopup'));
   modal.show();
 };
@@ -853,13 +864,13 @@ const fetchTourSchedule = async (tourid) => {
 
     console.log(response.data);
 
-    minDate = new Date(
+    minDate.value = new Date(
       Math.min(...schedules.value.map((item) => new Date(item.StartDate)))
     );
-    maxDate = new Date(
+    maxDate.value = new Date(
       Math.max(...schedules.value.map((item) => new Date(item.StartDate)))
     );
-    maxDate.setDate(maxDate.getDate() + 30);
+    maxDate.value.setDate(maxDate.value.getDate() + 30);
     disabledDates();
 
     schedules.value.map((item) => {
@@ -1026,6 +1037,18 @@ watch(
   { deep: true }
 );
 
+watch(
+  minDate,
+  (newMinDate) => {
+    if (newMinDate) {
+      initial_page.value = {
+        month: newMinDate.getMonth(),
+        year: newMinDate.getFullYear(),
+      };
+    }
+  },
+  { immediate: true }
+);
 onMounted(() => {
   const tourid = route.params.tourid;
   fetchTourSchedule(tourid);

@@ -32,7 +32,7 @@
           <!-- Full Name -->
           <div class="mb-3" v-if="!isLogin">
             <input
-              v-model="name"
+              v-model="FullName"
               type="text"
               class="form-control"
               placeholder="Full Name"
@@ -43,10 +43,19 @@
           <!-- Email -->
           <div class="mb-3">
             <input
-              v-model="email"
+              v-model="Email"
               type="email"
               class="form-control"
               placeholder="Email Address"
+              required
+            />
+          </div>
+          <div class="mb-3" v-if="!isLogin">
+            <input
+              v-model="PhoneNumber"
+              type="text"
+              class="form-control"
+              placeholder="Phone Number"
               required
             />
           </div>
@@ -54,7 +63,7 @@
           <!-- Password -->
           <div class="mb-3 position-relative">
             <input
-              v-model="password"
+              v-model="Password"
               type="password"
               class="form-control"
               placeholder="Password"
@@ -130,11 +139,12 @@ export default {
   data() {
     return {
       isLogin: true, // Toggle giữa Sign In và Sign Up
-      email: '',
-      password: '',
-      name: '',
+      Email: '',
+      Password: '',
+      FullName: '',
+      PhoneNumber: '',
       confirmPassword: '',
-      image_avatar:
+      AvatarUrl:
         'https://i.pinimg.com/736x/f5/fd/14/f5fd146c41549072d5a7823e31ea8eae.jpg',
       clientId:
         '87667223869-08fsea38r378m40iqpfarbmdm6a7n9bl.apps.googleusercontent.com',
@@ -146,25 +156,29 @@ export default {
       this.clearForm();
     },
     clearForm() {
-      this.email = '';
-      this.password = '';
-      this.name = '';
+      this.Email = '';
+      this.Password = '';
+      this.FullName = '';
     },
     async handleSubmit() {
       try {
-        if (!this.isLogin && this.password !== this.confirmPassword) {
+        if (!this.isLogin && this.Password !== this.confirmPassword) {
           alert('Passwords do not match.');
           return;
         }
         const endpoint = this.isLogin ? '/api/login' : '/api/register';
         const payload = {
-          email: this.email,
-          password: this.password,
-          ...(this.isLogin ? {} : { name: this.name }),
-          image_avatar: this.image_avatar,
+          Email: this.Email,
+          Password: this.Password,
+          ...(this.isLogin ? {} : { FullName: this.FullName }),
+          AvatarUrl: this.AvatarUrl,
+          ...(this.isLogin ? {} : { PhoneNumber: this.PhoneNumber }),
         };
-
+        console.log(payload);
         const response = await axios.post(endpoint, payload);
+        if (response.status != 200) {
+          alert('Sign in failed!');
+        }
         if (response.data.user) {
           localStorage.setItem('user', JSON.stringify(response.data.user));
           this.$router.push('/');
@@ -184,9 +198,9 @@ export default {
         const response = await axios.post(
           '/api/google-login', // URL của API
           {
-            name: data.name,
-            email: data.email,
-            image_avatar: data.picture,
+            FullName: data.name,
+            Email: data.email,
+            AvatarUrl: data.picture,
           },
           {
             headers: {

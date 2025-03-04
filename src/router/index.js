@@ -11,6 +11,7 @@ import BlogForm from '@/components/BlogForm.vue';
 import Sign_In_And_Out from '@/views/Sign_In_And_Out.vue';
 import FileViewer from '@/components/FileViewer.vue';
 import TourDetail from '@/views/TourDetail.vue';
+import OrderHistory from '@/components/OrderHistory.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -52,6 +53,10 @@ const router = createRouter({
     {
       path: '/TourDetail/:tourid',
       component: TourDetail,
+    },
+    {
+      path: '/OrderHistory',
+      component: OrderHistory,
     },
   ],
   scrollBehavior(to, from, savedPosition) {

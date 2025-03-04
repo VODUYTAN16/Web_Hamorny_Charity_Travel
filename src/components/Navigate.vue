@@ -51,18 +51,26 @@
                 >Ebooks</router-link
               >
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <router-link
                 to="/Charity"
                 class="nav-link text-center"
                 active-class="active"
                 >Charity Project</router-link
               >
+            </li> -->
+            <li class="nav-item">
+              <router-link
+                to="/OrderHistory"
+                class="store mx-4 text-center text-primary"
+              >
+                <i class="bx bxs-store bx-tada bx-flip-horizontal fs-1"></i>
+              </router-link>
             </li>
           </ul>
         </div>
         <div
-          class="account col-4 order-0 d-flex flex-column justify-content-center align-items-end"
+          class="account col-4 order-0 d-flex justify-content-end align-items-center"
         >
           <div class="text-center mx-2">
             <div>
@@ -73,13 +81,17 @@
                   'https://i.pinimg.com/236x/2f/15/f2/2f15f2e8c688b3120d3d26467b06330c.jpg'
                 "
                 alt="Avatar"
+                style="width: 55px; height: 55px"
                 @click="handleClick"
               />
             </div>
             <div v-if="isCardVisible">
               <div class="card" style="width: 18rem">
                 <img
-                  :src="user.image_avatar"
+                  :src="
+                    user.image_avatar ||
+                    'https://i.pinimg.com/236x/2f/15/f2/2f15f2e8c688b3120d3d26467b06330c.jpg'
+                  "
                   class="card-img-top rounded-circle"
                   alt="User Avatar"
                 />
@@ -138,6 +150,7 @@ const logout = () => {
   // Có thể xóa session, token, hoặc điều hướng đến trang đăng nhập
   isCardVisible.value = false; // Ẩn card sau khi đăng xuất
   // Nếu cần, có thể điều hướng người dùng đến trang đăng nhập
+  alert('log out successfull');
   fetchUser();
   router.push('/');
   // window.location.reload();

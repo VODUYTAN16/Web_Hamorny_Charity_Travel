@@ -13,6 +13,7 @@
       <RatingComponent></RatingComponent>
       <Project></Project>
       <TourSection></TourSection>
+      <OrderHistory></OrderHistory>
       <Footer></Footer>
     </main>
   </div>
@@ -26,6 +27,7 @@ import Project from '@/components/Project.vue';
 import PdfViewer from '@/components/PdfViewer.vue';
 import RatingComponent from '@/components/RatingComponent.vue';
 import TourSection from '@/components/TourSection.vue';
+import OrderHistory from '@/components/OrderHistory.vue';
 </script>
 
 <style scoped>
