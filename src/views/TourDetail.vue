@@ -5,7 +5,7 @@
       <div class="herosection">
         <HeroSection
           image="https://media.istockphoto.com/id/488876192/vi/anh/hoi-an-vietnam.jpg?s=2048x2048&w=is&k=20&c=i9PyzEChi5gMuB4Jf1HAzOmdEmY28_Bo3aBVx0tJb3Q="
-          p1="14 Days - Da Nang to Hoi An"
+          :p1="tour.Duration + ' Days - ' + tour.TourName"
           p2=""
         ></HeroSection>
       </div>
@@ -591,6 +591,7 @@
         :Schedules="schedules"
         :Tour="tour"
         :Services="services"
+        :Itineraries="itineraries"
       ></Tour_Information>
       <Footer></Footer>
     </main>
@@ -614,7 +615,7 @@ const tour = ref({}); // Lưu thông tin của tour
 const services = ref([]); // Lưu các services của tour
 const currentStep = ref(1); // Lưu bước hiện tại của việc đặt tour
 const user = ref(); // Lưu thông tin của người dùng hiện tại
-
+const itineraries = ref([]); // Lưu các lịch trình của tour
 const { mapCurrent } = useScreens({
   xs: '0px',
   sm: '640px',
@@ -835,10 +836,9 @@ const removeSevenDaysAfterSelectedDate = async (datePicked) => {
       const startDate = new Date(datePicked);
       allAvailableDates.value.push(datePicked);
 
-      const dayNumber =
-        new Date(schedules.value[index_StartDate].EndDate).getDate() -
-        datePicked.getDate() +
-        1;
+      const dayNumber = tour.value.Duration;
+      console.log(dayNumber);
+
       for (let i = 0; i < dayNumber; i++) {
         const dateToRemove = new Date(startDate);
         dateToRemove.setDate(startDate.getDate() + i);
@@ -879,11 +879,6 @@ const fetchTourSchedule = async (tourid) => {
         month: 'long',
         day: 'numeric',
       });
-      item.EndDate = new Date(item.EndDate).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      });
     });
   } catch (error) {
     console.error('Error fetching Tour Schedule:', error);
@@ -894,6 +889,7 @@ const fetchTourDetail = async (tourid) => {
   try {
     const response = await axios.get(`/api/tour/${tourid}`);
     tour.value = response.data;
+    console.log(tour.value);
   } catch (error) {
     console.error('Error fetching Tour Detail:', error);
   }
@@ -902,12 +898,22 @@ const fetchTourDetail = async (tourid) => {
 const fetchTourService = async (tourid) => {
   try {
     const response = await axios.get(`/api/tour/${tourid}/service`);
+    console.log(response.data);
     services.value = response.data;
   } catch (error) {
     console.error('Error fetching Tour Detail:', error);
   }
 };
 
+const fetchItyneraty = async (tourid) => {
+  try {
+    const response = await axios.get(`/api/itinerary/${tourid}`);
+    console.log(response.data);
+    itineraries.value = response.data;
+  } catch (error) {
+    console.error('Error fetching Tour Detail:', error);
+  }
+};
 const groupedServices = () => {
   return services.value.reduce((acc, service) => {
     const status = service.Status;
@@ -1054,6 +1060,7 @@ onMounted(() => {
   fetchTourSchedule(tourid);
   fetchTourService(tourid);
   fetchTourDetail(tourid);
+  fetchItyneraty(tourid);
   fetchUser();
 });
 </script>
