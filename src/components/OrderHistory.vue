@@ -47,21 +47,23 @@
       </ul>
       <div class="tab-content" id="myTabContent">
         <div
-          class="tab-pane fade show active"
+          class="tab-pane fade show active tour-history"
           id="home-tab-pane"
           role="tabpanel"
           aria-labelledby="home-tab"
           tabindex="0"
         >
+          <h3>List Of Tour</h3>
           <TourSection></TourSection>
         </div>
         <div
-          class="tab-pane fade"
+          class="tab-pane fade tour-history"
           id="profile-tab-pane"
           role="tabpanel"
           aria-labelledby="profile-tab"
           tabindex="0"
         >
+          <h3>Booking History</h3>
           <div class="container my-4">
             <div v-if="bookings.length === 0" class="alert alert-info">
               You have no tour booking history.
@@ -147,7 +149,8 @@
                             new Date(
                               new Date(BookingDetail[0].StartDate).setDate(
                                 new Date(BookingDetail[0].StartDate).getDate() +
-                                  BookingDetail[0].Duration
+                                  BookingDetail[0].Duration -
+                                  1
                               )
                             ).toLocaleDateString('en-US', {
                               year: 'numeric',
@@ -227,7 +230,7 @@
                             <tr
                               v-if="bookServices && bookServices.length === 0"
                             >
-                              <td colspan="7" class="text-center">No data</td>
+                              <td colspan="7" class="text-center">Nothing</td>
                             </tr>
                           </tbody>
                         </table>
@@ -471,5 +474,10 @@ header .content {
 
 .nav-tabs .nav-link.active {
   color: rgba(31, 68, 95) !important; /* Màu chữ xanh khi active */
+}
+
+.tour-history {
+  margin: 20px;
+  padding: 10px;
 }
 </style>

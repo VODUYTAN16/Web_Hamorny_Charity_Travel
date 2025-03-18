@@ -145,7 +145,7 @@ export default {
       PhoneNumber: '',
       confirmPassword: '',
       AvatarUrl:
-        'https://i.pinimg.com/736x/f5/fd/14/f5fd146c41549072d5a7823e31ea8eae.jpg',
+        'https://i.pinimg.com/474x/93/75/ae/9375aef3b0ea35e0cf4ca12862bb5fef.jpg',
       clientId:
         '87667223869-08fsea38r378m40iqpfarbmdm6a7n9bl.apps.googleusercontent.com',
     };
@@ -176,13 +176,16 @@ export default {
         };
         console.log(payload);
         const response = await axios.post(endpoint, payload);
-        if (response.status != 200) {
-          alert('Sign in failed!');
+        alert(response.data.message);
+
+        if (!this.isLogin && response.status == 200) {
+          alert("Let's Sign In");
+          window.location.href = '/sign_in_and_out';
         }
+
         if (response.data.user) {
           localStorage.setItem('user', JSON.stringify(response.data.user));
           this.$router.push('/');
-          alert(response.data.message);
         }
       } catch (error) {
         alert('Error: ' + error.response.data.message);

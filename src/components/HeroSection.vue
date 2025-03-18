@@ -26,7 +26,7 @@ section {
 
 .nameandslogan p {
   color: #fff;
-  /* font-size: 50px; */
+  font-size: 50px;
   font-weight: bold;
   /* background-color: rgba(242, 183, 5, 0.5); */
   background-color: rgb(

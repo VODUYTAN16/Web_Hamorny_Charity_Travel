@@ -31,7 +31,7 @@
         aria-hidden="true"
         data-bs-backdrop="static"
       >
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-xl">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="popupTitle">Discover Vietnam</h5>
@@ -851,6 +851,8 @@ const removeSevenDaysAfterSelectedDate = async (datePicked) => {
           allDisabledDates.value.splice(index, 1);
         }
       }
+    } else {
+      selectedDate.value = null;
     }
   } catch (error) {
     console.error('Error remove 7 days after selected date:', error);
@@ -979,10 +981,23 @@ const validateForm = () => {
   return true; // Nếu không có lỗi
 };
 
+function splitFullName(fullName) {
+  let nameParts = fullName.trim().split(/\s+/); // Tách theo dấu cách
+  let firstName = nameParts[0]; // Lấy từ đầu tiên làm First Name
+  let lastName = nameParts.slice(1).join(' '); // Phần còn lại làm Last Name
+  return { firstName, lastName };
+}
+
 const fetchUser = () => {
   const userData = JSON.parse(localStorage.getItem('user'));
   if (userData) {
     user.value = userData;
+    Buyer.email = userData.Email;
+    Buyer.confirmEmail = userData.Email;
+    Buyer.phoneNumber = userData.PhoneNumber ? userData.PhoneNumber : '';
+    const name = splitFullName(userData.FullName);
+    Buyer.firstName = name.firstName;
+    Buyer.lastName = name.lastName;
   }
 };
 
@@ -1057,11 +1072,11 @@ watch(
 );
 onMounted(() => {
   const tourid = route.params.tourid;
+  fetchUser();
   fetchTourSchedule(tourid);
   fetchTourService(tourid);
   fetchTourDetail(tourid);
   fetchItyneraty(tourid);
-  fetchUser();
 });
 </script>
 
@@ -1076,7 +1091,7 @@ onMounted(() => {
 
 .card-box {
   position: absolute; /* Phần tử cha cần có position khác "static" */
-  height: 180%;
+  height: 250%;
   top: 60%;
   right: 5%;
 }

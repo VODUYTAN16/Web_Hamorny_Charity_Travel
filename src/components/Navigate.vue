@@ -59,7 +59,7 @@
                 >Charity Project</router-link
               >
             </li> -->
-            <li class="nav-item">
+            <li class="nav-item text-center">
               <router-link
                 to="/OrderHistory"
                 class="store mx-4 text-center text-primary"
