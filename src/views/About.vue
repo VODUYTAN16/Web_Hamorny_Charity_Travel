@@ -43,9 +43,10 @@
       <TheTeam></TheTeam>
       <div class="d-flex justify-content-center">
         <iframe
+          style="border-radius: 10px"
           class="embed-responsive-item video"
           id="myVideo"
-          src="https://www.youtube.com/embed/ZzwZaHNqrVM?autoplay=1&mute=1"
+          src="https://www.youtube.com/embed/NSnkb1IAjbE?autoplay=1&mute=1"
           frameborder="0"
           allow="autoplay; encrypted-media"
           allowfullscreen
@@ -66,6 +67,9 @@ import Core_Value from '@/components/Core_Value.vue';
 </script>
 
 <style scoped>
+main {
+  overflow: hidden;
+}
 .heroimage {
   position: relative;
   height: 450px;

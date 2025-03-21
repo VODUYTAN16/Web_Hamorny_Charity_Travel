@@ -66,129 +66,139 @@
             <div class="modal-body">
               <div class="container-fluid">
                 <div class="row">
-                  <div v-if="currentStep === 1" class="col-md-8 page-left">
-                    <h6>Select Departure</h6>
-                    <div class="mb-3">
-                      <!-- Lịch hiển thị toàn bộ calendar -->
-                      <VCalendar
-                        :columns="columns"
-                        :expanded="expanded"
-                        :color="selectedColor"
-                        :attributes="[...allowedDates, ...datesPicked]"
-                        :disabled-dates="allDisabledDates"
-                        :min-date="minDate"
-                        :max-date="maxDate"
-                        initial-page="initial_page"
-                        :key="initial_page.month + '-' + initial_page.year"
-                        v-model="selectedDate"
-                        @dayclick="
-                          removeSevenDaysAfterSelectedDate($event.date)
-                        "
-                        borderless
-                        is-required
-                      />
+                  <div
+                    v-if="currentStep === 1"
+                    class="col-md-8 page-left d-flex flex-column align-items-center"
+                  >
+                    <div>
+                      <h6>Select Departure</h6>
+                      <div class="mb-3">
+                        <!-- Lịch hiển thị toàn bộ calendar -->
+                        <VCalendar
+                          :columns="columns"
+                          :expanded="expanded"
+                          :color="selectedColor"
+                          :attributes="[...allowedDates, ...datesPicked]"
+                          :disabled-dates="allDisabledDates"
+                          :min-date="minDate"
+                          :max-date="maxDate"
+                          initial-page="initial_page"
+                          :key="initial_page.month + '-' + initial_page.year"
+                          v-model="selectedDate"
+                          @dayclick="
+                            removeSevenDaysAfterSelectedDate($event.date)
+                          "
+                          borderless
+                          is-required
+                        />
+                      </div>
                     </div>
 
-                    <h6>Package</h6>
-                    <div class="mb-3 d-flex">
-                      <div class="dropdown">
-                        <button
-                          class="btn btn-light dropdown-toggle"
-                          type="button"
-                          id="dropdownMenuButton"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          <i class="bi bi-person"></i> {{ selectedPakage }}
-                        </button>
-                        <ul
-                          class="dropdown-menu"
-                          aria-labelledby="dropdownMenuButton"
-                        >
-                          <li
-                            v-for="value in caculateMount(
-                              getSchedule(selectedDate)?.AvailableSpots
-                            )"
-                            :key="value"
+                    <div
+                      class="d-flex flex-column justify-content-start"
+                      style="width: 70%"
+                    >
+                      <h6>Package</h6>
+                      <div class="mb-3 d-flex">
+                        <div class="dropdown">
+                          <button
+                            class="btn btn-light dropdown-toggle"
+                            type="button"
+                            id="dropdownMenuButton"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
                           >
-                            <a
-                              class="dropdown-item"
-                              href="#"
-                              @click.prevent="_selectPackage(value)"
+                            <i class="bi bi-person"></i> {{ selectedPakage }}
+                          </button>
+                          <ul
+                            class="dropdown-menu"
+                            aria-labelledby="dropdownMenuButton"
+                          >
+                            <li
+                              v-for="value in caculateMount(
+                                getSchedule(selectedDate)?.AvailableSpots
+                              )"
+                              :key="value"
                             >
-                              {{ value }}
-                            </a>
-                          </li>
-                        </ul>
+                              <a
+                                class="dropdown-item"
+                                href="#"
+                                @click.prevent="_selectPackage(value)"
+                              >
+                                {{ value }}
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+
+                        <h6 style="margin-left: 20%">
+                          Trip Price: <strong>${{ tour.Price }}</strong>
+                        </h6>
                       </div>
 
-                      <h6 style="margin-left: 20%">
-                        Trip Price: <strong>${{ tour.Price }}</strong>
-                      </h6>
-                    </div>
-
-                    <h6>Select Options</h6>
-                    <div
-                      class="form-check px-0"
-                      v-for="(items, status) in groupedServices()"
-                      :key="status"
-                    >
-                      <div v-if="status != 'Available'">
-                        <div v-for="(option, index) in items" :key="index">
-                          <div class="row">
-                            <div class="col-2">
-                              <div class="dropdown">
-                                <button
-                                  class="btn btn-light dropdown-toggle"
-                                  type="button"
-                                  id="dropdownMenuButton"
-                                  data-bs-toggle="dropdown"
-                                  aria-expanded="false"
-                                  style="width: fit-content"
-                                >
-                                  {{
-                                    selectedOptions[option.ServiceID]
-                                      ?.Quantity || 0
-                                  }}
-                                </button>
-                                <ul
-                                  class="dropdown-menu"
-                                  aria-labelledby="dropdownMenuButton"
-                                >
-                                  <li
-                                    v-for="value in caculateMount(
-                                      option.Capacity
-                                    )"
-                                    :key="value"
+                      <h6>Select Options</h6>
+                      <div
+                        class="form-check px-0"
+                        v-for="(items, status) in groupedServices()"
+                        :key="status"
+                      >
+                        <div v-if="status != 'Available'">
+                          <div v-for="(option, index) in items" :key="index">
+                            <div class="row">
+                              <div class="col-2">
+                                <div class="dropdown">
+                                  <button
+                                    class="btn btn-light dropdown-toggle"
+                                    type="button"
+                                    id="dropdownMenuButton"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                    style="width: fit-content"
                                   >
-                                    <a
-                                      class="dropdown-item"
-                                      href="#"
-                                      @click.prevent="
-                                        selectOption(option.ServiceID, value)
-                                      "
+                                    {{
+                                      selectedOptions[option.ServiceID]
+                                        ?.Quantity || 0
+                                    }}
+                                  </button>
+                                  <ul
+                                    class="dropdown-menu"
+                                    aria-labelledby="dropdownMenuButton"
+                                  >
+                                    <li
+                                      v-for="value in caculateMount(
+                                        option.Capacity
+                                      )"
+                                      :key="value"
                                     >
-                                      {{ value }}
-                                    </a>
-                                  </li>
-                                </ul>
-                              </div>
-                            </div>
-                            <div class="col">
-                              <div class="d-flex flex-column">
-                                <div class="d-flex">
-                                  <h5>
-                                    {{ option.ServiceName }}
-                                  </h5>
-                                  <h5 style="margin-left: auto">
-                                    ${{ option.Price }}
-                                  </h5>
-                                </div>
-                                <div>
-                                  {{ option.Description }}
+                                      <a
+                                        class="dropdown-item"
+                                        href="#"
+                                        @click.prevent="
+                                          selectOption(option.ServiceID, value)
+                                        "
+                                      >
+                                        {{ value }}
+                                      </a>
+                                    </li>
+                                  </ul>
                                 </div>
                               </div>
-                              <hr />
+                              <div class="col">
+                                <div class="d-flex flex-column">
+                                  <div class="d-flex">
+                                    <h5>
+                                      {{ option.ServiceName }}
+                                    </h5>
+                                    <h5 style="margin-left: auto">
+                                      ${{ option.Price }}
+                                    </h5>
+                                  </div>
+                                  <div>
+                                    {{ option.Description }}
+                                  </div>
+                                </div>
+                                <hr />
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -1091,7 +1101,7 @@ onMounted(() => {
 
 .card-box {
   position: absolute; /* Phần tử cha cần có position khác "static" */
-  height: 250%;
+  height: 100%;
   top: 60%;
   right: 5%;
 }

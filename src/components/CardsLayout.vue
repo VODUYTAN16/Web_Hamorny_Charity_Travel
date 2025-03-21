@@ -43,9 +43,10 @@ import Card from './Card.vue';
       />
     </div>
     <iframe
+      style="border-radius: 10px"
       class="embed-responsive-item video"
       id="myVideo"
-      src="https://www.youtube.com/embed/ZzwZaHNqrVM?autoplay=1&mute=1"
+      src="https://www.youtube.com/embed/NSnkb1IAjbE?autoplay=1&mute=1"
       frameborder="0"
       allow="autoplay; encrypted-media"
       allowfullscreen

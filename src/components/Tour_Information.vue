@@ -130,7 +130,12 @@
             :class="{ active: index === 0 }"
           >
             <div class="image-container">
-              <img :src="item.ImageUrl" class="d-block w-100" alt="..." />
+              <img
+                :src="item.ImageUrl"
+                class="d-block w-100"
+                alt="..."
+                style="max-width: 100%; height: auto; object-fit: cover"
+              />
               <!-- Lớp phủ mờ -->
               <div class="overlay"></div>
             </div>
