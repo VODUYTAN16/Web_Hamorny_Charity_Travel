@@ -192,9 +192,15 @@ export default {
       }
     },
 
-    async handleCredentialResponse(response) {
-      // console.log('Encoded JWT ID token: ' + response.credential);
+    async fetchUser() {
+      const userData = JSON.parse(localStorage.getItem('user'));
+      if (userData) {
+        alert('You already logged in');
+        this.$router.push('/');
+      }
+    },
 
+    async handleCredentialResponse(response) {
       const data = this.parseJwt(response.credential);
 
       try {
@@ -231,6 +237,7 @@ export default {
         console.error('Error during the request:', error);
       }
     },
+
     parseJwt(token) {
       const base64Url = token.split('.')[1];
       const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -244,7 +251,7 @@ export default {
     },
   },
   mounted() {
-    // Ensure the Google platform library is loaded before running
+    this.fetchUser();
     const script = document.createElement('script');
     script.src = 'https://accounts.google.com/gsi/client';
     script.async = true;

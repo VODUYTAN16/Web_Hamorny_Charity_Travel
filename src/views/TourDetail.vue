@@ -116,7 +116,7 @@
                           >
                             <li
                               v-for="value in caculateMount(
-                                getSchedule(selectedDate)?.AvailableSpots
+                                schedulePicked.AvailableSpots
                               )"
                               :key="value"
                             >
@@ -166,7 +166,8 @@
                                   >
                                     <li
                                       v-for="value in caculateMount(
-                                        option.Capacity
+                                        scheduleTSData[option.ServiceID]
+                                          ?.AvailableSpots || 0
                                       )"
                                       :key="value"
                                     >
@@ -752,17 +753,31 @@ const goBack = () => {
 const initializeParticipants = (number) => {
   Participant.splice(0, Participant.length); // Xóa tất cả phần tử hiện tại
   for (let i = 0; i < number; i++) {
-    Participant.push({
-      firstName: '',
-      lastName: '',
-      email: '',
-      fullNameOnPassport: '',
-      passportNumber: '',
-      dateOfBirth: '',
-      gender: '',
-      nationality: '',
-      phoneNumber: '',
-    });
+    if (i == 0) {
+      Participant.push({
+        firstName: Buyer.firstName,
+        lastName: Buyer.lastName,
+        email: user.value.Email,
+        fullNameOnPassport: user.value.FullName,
+        passportNumber: '',
+        dateOfBirth: '',
+        gender: '',
+        nationality: '',
+        phoneNumber: user.value.PhoneNumber,
+      });
+    } else {
+      Participant.push({
+        firstName: '',
+        lastName: '',
+        email: '',
+        fullNameOnPassport: '',
+        passportNumber: '',
+        dateOfBirth: '',
+        gender: '',
+        nationality: '',
+        phoneNumber: '',
+      });
+    }
   }
 };
 
@@ -771,6 +786,7 @@ const initializeParticipants = (number) => {
 const selectedPakage = ref(1); // Lưu số lượng người tham gia
 const selectedOptions = ref({}); // Lưu số lượng đã chọn cho từng option
 const schedulePicked = ref({}); // Lưu lịch trình đã chọn
+const scheduleTSData = ref({});
 //
 
 const _selectPackage = (value) => {
@@ -785,19 +801,44 @@ const selectOption = (optionId, Quantity) => {
   selectedOptions.value[optionId] = { Quantity, ...service }; // Cập nhật số lượng cho từng option
 };
 
-const getSchedule = (date) => {
-  const index = schedules.value.findIndex((schedule) => {
-    return (
-      new Date(schedule.StartDate).toDateString() ===
-      new Date(date).toDateString()
-    );
-  });
-  if (index != -1) {
-    schedulePicked.value = schedules.value[index];
-    return schedules.value[index];
+// const getSchedule = (date) => {
+//   const index = schedules.value.findIndex((schedule) => {
+//     return (
+//       new Date(schedule.StartDate).toDateString() ===
+//       new Date(date).toDateString()
+//     );
+//   });
+//   if (index != -1) {
+//     schedulePicked.value = schedules.value[index];
+//     fetchScheduleTS(schedules.value[index].ScheduleID);
+//     return schedules.value[index];
+//   }
+// };
+
+// Hàm gọi API và cập nhật dữ liệu
+const fetchScheduleTS = async (ScheduleID) => {
+  try {
+    const tourid = route.params.tourid;
+    const response = await axios.get(`/api/tour/${tourid}/${ScheduleID}`);
+    if (response.status === 200) {
+      response.data.forEach((item) => {
+        scheduleTSData.value[item.ServiceID] = item; // Lưu trữ dữ liệu theo ServiceID
+      });
+    }
+
+    console.log(scheduleTSData.value);
+  } catch (err) {
+    console.log('getschedule_ts', err);
   }
 };
 
+const caculateMount = (mount) => {
+  let arr = [];
+  for (let i = 0; i <= mount; i++) {
+    arr.push(i);
+  }
+  return arr;
+};
 // current = 2
 const Buyer = reactive({
   firstName: '',
@@ -843,6 +884,8 @@ const removeSevenDaysAfterSelectedDate = async (datePicked) => {
     );
     // Kiểm tra ngày được chọn có ở trong schedule
     if (index_StartDate != -1) {
+      schedulePicked.value = schedules.value[index_StartDate];
+      fetchScheduleTS(schedulePicked.value.ScheduleID);
       const startDate = new Date(datePicked);
       allAvailableDates.value.push(datePicked);
 
@@ -863,6 +906,7 @@ const removeSevenDaysAfterSelectedDate = async (datePicked) => {
       }
     } else {
       selectedDate.value = null;
+      scheduleTSData.value = [];
     }
   } catch (error) {
     console.error('Error remove 7 days after selected date:', error);
@@ -874,7 +918,7 @@ const fetchTourSchedule = async (tourid) => {
     const response = await axios.get(`/api/tour/${tourid}/schedule`);
     schedules.value = response.data;
 
-    console.log(response.data);
+    console.log(schedules.value);
 
     minDate.value = new Date(
       Math.min(...schedules.value.map((item) => new Date(item.StartDate)))
@@ -932,16 +976,9 @@ const groupedServices = () => {
     console.log(status);
     if (!acc[status]) acc[status] = [];
     acc[status].push(service);
+    console.log('acc: ', acc);
     return acc;
   }, {});
-};
-
-const caculateMount = (mount) => {
-  let arr = [];
-  for (let i = 0; i <= mount; i++) {
-    arr.push(i);
-  }
-  return arr;
 };
 
 const validateForm = () => {
@@ -998,16 +1035,20 @@ function splitFullName(fullName) {
   return { firstName, lastName };
 }
 
+const initialBuyer = (userData) => {
+  console.log(userData);
+  Buyer.email = userData.Email;
+  Buyer.confirmEmail = userData.Email;
+  Buyer.phoneNumber = userData.PhoneNumber ? userData.PhoneNumber : '';
+  const name = splitFullName(userData.FullName);
+  Buyer.firstName = name.firstName;
+  Buyer.lastName = name.lastName;
+};
 const fetchUser = () => {
   const userData = JSON.parse(localStorage.getItem('user'));
   if (userData) {
     user.value = userData;
-    Buyer.email = userData.Email;
-    Buyer.confirmEmail = userData.Email;
-    Buyer.phoneNumber = userData.PhoneNumber ? userData.PhoneNumber : '';
-    const name = splitFullName(userData.FullName);
-    Buyer.firstName = name.firstName;
-    Buyer.lastName = name.lastName;
+    initialBuyer(userData);
   }
 };
 
@@ -1080,6 +1121,7 @@ watch(
   },
   { immediate: true }
 );
+
 onMounted(() => {
   const tourid = route.params.tourid;
   fetchUser();
@@ -1102,7 +1144,7 @@ onMounted(() => {
 .card-box {
   position: absolute; /* Phần tử cha cần có position khác "static" */
   height: 100%;
-  top: 60%;
+  top: 50%;
   right: 5%;
 }
 
