@@ -23,22 +23,23 @@ import Card from './Card.vue';
     <div class="cards row justify-content-center">
       <Card
         title="Local Guides"
-        description="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolorum delectus amet ducimus unde labore eaque quas quam asperiores sunt, ea, et minus eligendi?"
+        description="Discover your destination with our experienced local guides. We connect you with experts who know the hidden gems, culture, and history of the area. Let us make your journey more authentic and meaningful!?"
         image="https://i.pinimg.com/736x/ce/b7/77/ceb77763743d02ed0b8f2970fd807466.jpg"
         buttonLink="/About"
         buttonText="Meet The Team"
       />
       <Card
         title="Unique Accommodation"
-        description="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolorum delectus amet ducimus unde labore eaque quas quam asperiores sunt, ea, et minus eligendi?"
+        description="Our team is made up of passionate travelers and dedicated professionals. From tour organizers to enthusiastic guides, we’re here to ensure your trip is unforgettable. Get to know the people behind your adventure!"
         image="https://i.pinimg.com/736x/be/45/d0/be45d0b0c9cef355b656923698219aeb.jpg"
+        buttonLink="/About"
         buttonText="Where we stay"
       />
       <Card
         title="Giving Back Projects"
-        description="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolorum delectus amet ducimus unde labore eaque quas quam asperiores sunt, ea, et minus eligendi?"
+        description="Travel with a purpose. Our initiatives support local communities through education, conservation, and sustainable development. Join us in making a positive impact wherever we go."
         image="https://i.pinimg.com/736x/56/54/89/5654899f3c367d70e82b25e42f306a07.jpg"
-        buttonLink="/Charity"
+        buttonLink="/Ebook"
         buttonText="Charity Project"
       />
     </div>

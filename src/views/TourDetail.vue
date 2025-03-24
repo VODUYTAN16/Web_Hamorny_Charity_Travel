@@ -71,7 +71,7 @@
                     class="col-md-8 page-left d-flex flex-column align-items-center"
                   >
                     <div>
-                      <h6>Select Departure</h6>
+                      <h5>Select Departure</h5>
                       <div class="mb-3">
                         <!-- Lịch hiển thị toàn bộ calendar -->
                         <VCalendar
@@ -98,7 +98,17 @@
                       class="d-flex flex-column justify-content-start"
                       style="width: 70%"
                     >
-                      <h6>Package</h6>
+                      <div class="d-flex">
+                        <h5>Package</h5>
+                        <h6
+                          v-if="selectedDate && schedulePicked.AvailableSpots"
+                          class="mx-1 bg-info rounded p-1"
+                          style="max-width: fit-content"
+                        >
+                          {{ schedulePicked.AvailableSpots }} left
+                        </h6>
+                      </div>
+
                       <div class="mb-3 d-flex">
                         <div class="dropdown">
                           <button
@@ -136,7 +146,7 @@
                         </h6>
                       </div>
 
-                      <h6>Select Options</h6>
+                      <h5>Select Options</h5>
                       <div
                         class="form-check px-0"
                         v-for="(items, status) in groupedServices()"
@@ -190,6 +200,16 @@
                                     <h5>
                                       {{ option.ServiceName }}
                                     </h5>
+                                    <h6
+                                      v-if="selectedDate"
+                                      class="mx-1 bg-info rounded p-1"
+                                    >
+                                      {{
+                                        scheduleTSData[option.ServiceID]
+                                          ?.AvailableSpots || 0
+                                      }}
+                                      left
+                                    </h6>
                                     <h5 style="margin-left: auto">
                                       ${{ option.Price }}
                                     </h5>
@@ -783,7 +803,7 @@ const initializeParticipants = (number) => {
 
 // current =1
 //datadata
-const selectedPakage = ref(1); // Lưu số lượng người tham gia
+const selectedPakage = ref(0); // Lưu số lượng người tham gia
 const selectedOptions = ref({}); // Lưu số lượng đã chọn cho từng option
 const schedulePicked = ref({}); // Lưu lịch trình đã chọn
 const scheduleTSData = ref({});
@@ -801,20 +821,6 @@ const selectOption = (optionId, Quantity) => {
   selectedOptions.value[optionId] = { Quantity, ...service }; // Cập nhật số lượng cho từng option
 };
 
-// const getSchedule = (date) => {
-//   const index = schedules.value.findIndex((schedule) => {
-//     return (
-//       new Date(schedule.StartDate).toDateString() ===
-//       new Date(date).toDateString()
-//     );
-//   });
-//   if (index != -1) {
-//     schedulePicked.value = schedules.value[index];
-//     fetchScheduleTS(schedules.value[index].ScheduleID);
-//     return schedules.value[index];
-//   }
-// };
-
 // Hàm gọi API và cập nhật dữ liệu
 const fetchScheduleTS = async (ScheduleID) => {
   try {
@@ -825,7 +831,6 @@ const fetchScheduleTS = async (ScheduleID) => {
         scheduleTSData.value[item.ServiceID] = item; // Lưu trữ dữ liệu theo ServiceID
       });
     }
-
     console.log(scheduleTSData.value);
   } catch (err) {
     console.log('getschedule_ts', err);
@@ -864,12 +869,11 @@ const payment = reactive({
 });
 // Hàm loại bỏ 7 ngày liên tiếp sau ngày được chọn
 const removeSevenDaysAfterSelectedDate = async (datePicked) => {
-  selectedDate.value = new Date(datePicked).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
   try {
+    //Khởi tạo lại số lượng của optional service
+    scheduleTSData.value = [];
+    schedulePicked.value = {};
+    selectedDate.value = null;
     // Lưu vào allAvailable
     if (allAvailableDates.value != null && allAvailableDates.value.length > 0) {
       allDisabledDates.value = [
@@ -884,24 +888,31 @@ const removeSevenDaysAfterSelectedDate = async (datePicked) => {
     );
     // Kiểm tra ngày được chọn có ở trong schedule
     if (index_StartDate != -1) {
-      schedulePicked.value = schedules.value[index_StartDate];
-      fetchScheduleTS(schedulePicked.value.ScheduleID);
-      const startDate = new Date(datePicked);
-      allAvailableDates.value.push(datePicked);
+      if (schedules.value[index_StartDate].Status != 'Full') {
+        selectedDate.value = new Date(datePicked).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        });
+        schedulePicked.value = schedules.value[index_StartDate];
+        fetchScheduleTS(schedulePicked.value.ScheduleID);
+        const startDate = new Date(datePicked);
+        allAvailableDates.value.push(datePicked);
 
-      const dayNumber = tour.value.Duration;
-      console.log(dayNumber);
+        const dayNumber = tour.value.Duration;
+        console.log(dayNumber);
 
-      for (let i = 0; i < dayNumber; i++) {
-        const dateToRemove = new Date(startDate);
-        dateToRemove.setDate(startDate.getDate() + i);
-        const index = allDisabledDates.value.findIndex(
-          (disabledDate) =>
-            disabledDate.toDateString() === dateToRemove.toDateString()
-        );
-        if (index !== -1) {
-          allAvailableDates.value.push(allDisabledDates.value[index]);
-          allDisabledDates.value.splice(index, 1);
+        for (let i = 0; i < dayNumber; i++) {
+          const dateToRemove = new Date(startDate);
+          dateToRemove.setDate(startDate.getDate() + i);
+          const index = allDisabledDates.value.findIndex(
+            (disabledDate) =>
+              disabledDate.toDateString() === dateToRemove.toDateString()
+          );
+          if (index !== -1) {
+            allAvailableDates.value.push(allDisabledDates.value[index]);
+            allDisabledDates.value.splice(index, 1);
+          }
         }
       }
     } else {
@@ -917,7 +928,10 @@ const fetchTourSchedule = async (tourid) => {
   try {
     const response = await axios.get(`/api/tour/${tourid}/schedule`);
     schedules.value = response.data;
-
+    // Sắp xếp lại các ngày trong lịch trình theo chiều tăng dần
+    schedules.value.sort(
+      (a, b) => new Date(a.StartDate) - new Date(b.StartDate)
+    );
     console.log(schedules.value);
 
     minDate.value = new Date(
@@ -987,7 +1001,7 @@ const validateForm = () => {
       alert('Please select a departure date.');
       return false;
     }
-    if (!selectedPakage.value) {
+    if (selectedPakage.value <= 0) {
       alert('Please select a package.');
       return false;
     }
