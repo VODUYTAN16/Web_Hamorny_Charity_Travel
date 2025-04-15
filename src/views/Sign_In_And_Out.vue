@@ -64,11 +64,22 @@
           <div class="mb-3 position-relative">
             <input
               v-model="Password"
-              type="password"
+              :type="showPassword ? 'text' : 'password'"
               class="form-control"
               placeholder="Password"
               required
             />
+            <span
+              class="position-absolute end-0 top-50 translate-middle-y me-3"
+              style="cursor: pointer"
+              @click="showPassword = !showPassword"
+            >
+              <i
+                :class="
+                  showPassword ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash'
+                "
+              ></i>
+            </span>
           </div>
 
           <!-- Confirm Password -->
@@ -138,6 +149,7 @@ const router = useRouter();
 export default {
   data() {
     return {
+      showPassword: false,
       isLogin: true, // Toggle giữa Sign In và Sign Up
       Email: '',
       Password: '',
