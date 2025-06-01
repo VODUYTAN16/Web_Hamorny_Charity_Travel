@@ -687,8 +687,8 @@ app.get('/proxy', async (req, res) => {
 });
 
 // Khởi động server
-app.listen(process.env.MYSQLPORT, () => {
+app.listen(process.env.PORT, () => {
   console.log(
-    `Server running on http://${process.env.MYSQLHOST}:${process.env.MYSQLPORT}`
+    `Server running on http://${process.env.MYSQLHOST}:${process.env.PORT}`
   );
 });
