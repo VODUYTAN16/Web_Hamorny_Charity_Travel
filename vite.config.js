@@ -6,6 +6,7 @@ import vueDevTools from 'vite-plugin-vue-devtools';
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/Web_Hamorny_Charity_Travel/', // <--- Thêm dòng này
   server: {
     proxy: {
       '/api': {

@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import mysql from 'mysql2';
 import axios from 'axios';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const app = express();
 const port = 3000;
@@ -29,10 +31,15 @@ app.use(function (req, res, next) {
 
 // Kết nối MySQL
 const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: process.env.PASSWORD_MYSQL, // Thay bằng mật khẩu của bạn
-  database: 'blog_db', // Tên database
+  // host: 'localhost',
+  // user: 'root',
+  // password: process.env.PASSWORD_MYSQL, // Thay bằng mật khẩu của bạn
+  // database: 'blog_db', // Tên database
+  host: process.env.MYSQLHOST,
+  user: process.env.MYSQLUSER,
+  password: process.env.MYSQL_ROOT_PASSWORD,
+  database: process.env.MYSQL_DATABASE,
+  port: process.env.MYSQLPORT,
 });
 
 db.connect((err) => {
@@ -680,6 +687,8 @@ app.get('/proxy', async (req, res) => {
 });
 
 // Khởi động server
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+app.listen(process.env.MYSQLPORT, () => {
+  console.log(
+    `Server running on http://${process.env.MYSQLHOST}:${process.env.MYSQLPORT}`
+  );
 });
