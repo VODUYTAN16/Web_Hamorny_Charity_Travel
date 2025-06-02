@@ -178,7 +178,9 @@ export default {
           alert('Passwords do not match.');
           return;
         }
-        const endpoint = this.isLogin ? '/api/login' : '/api/register';
+        const endpoint = this.isLogin
+          ? '/api/login'
+          : 'https://talented-abundance-production.up.railway.app/api/register';
         const payload = {
           Email: this.Email,
           Password: this.Password,
