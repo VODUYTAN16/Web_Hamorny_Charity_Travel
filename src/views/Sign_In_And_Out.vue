@@ -142,7 +142,7 @@
 </template>
 
 <script>
-import axios from '@/axios';
+import api from '@/axios';
 import { useRouter } from 'vue-router';
 const router = useRouter();
 
@@ -187,7 +187,7 @@ export default {
           ...(this.isLogin ? {} : { PhoneNumber: this.PhoneNumber }),
         };
         console.log(payload);
-        const response = await axios.post(endpoint, payload);
+        const response = await api.post(endpoint, payload);
         alert(response.data.message);
 
         if (!this.isLogin && response.status == 200) {
@@ -216,7 +216,7 @@ export default {
       const data = this.parseJwt(response.credential);
 
       try {
-        const response = await axios.post(
+        const response = await api.post(
           '/api/google-login', // URL của API
           {
             FullName: data.name,
