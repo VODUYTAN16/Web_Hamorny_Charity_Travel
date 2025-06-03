@@ -87,7 +87,7 @@
               <Actical_card
                 :image="article.ImageUrl"
                 :title="article.Title"
-                :description="article.ContentIntro.slice(0, 100) + '...'"
+                :description="article.ContentIntro"
                 :author="article.Author"
                 :authorAvatar="article.AuthorAvatar"
                 :views="article.Views"
@@ -135,7 +135,7 @@ const visibleCommentsCount = ref(3);
 
 // Tính toán danh sách bình luận cần hiển thị
 const visibleComments = computed(() => {
-  return comments.value.slice(0, visibleCommentsCount.value);
+  return comments?.value.slice(0, visibleCommentsCount.value);
 });
 
 // Hàm để tải thêm bình luận
