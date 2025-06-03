@@ -308,7 +308,7 @@
 </template>
 <script setup>
 import { ref, reactive, onMounted, computed } from 'vue';
-import axios from 'axios';
+import api from '@/axios';
 import Navigate from './Navigate.vue';
 import HeroSection from './HeroSection.vue';
 import TourSection from '@/components/TourSection.vue';
@@ -393,7 +393,7 @@ const fetchUser = () => {
 
 const fetchBookings = async (userID) => {
   try {
-    const response = await axios.get(`/api/booking/${userID}`);
+    const response = await api.get(`/api/booking/${userID}`);
     bookings.value = response.data.reverse();
     console.log(userID);
     console.log('bookings: ', bookings.value);
@@ -424,9 +424,7 @@ const fetchBookings = async (userID) => {
 
 const getDetailOfSpecificedBooking = async (booking) => {
   try {
-    const response = await axios.get(
-      `/api/detail_booking/${booking.BookingID}`
-    );
+    const response = await api.get(`/api/detail_booking/${booking.BookingID}`);
     BookingDetail.value = response.data;
   } catch (err) {
     console.log('err of getDetailOfSpecificedBooking', err);
@@ -435,7 +433,7 @@ const getDetailOfSpecificedBooking = async (booking) => {
 
 const bookedServices = async (bookingId) => {
   try {
-    const response = await axios.get(`/api/booked_service/${bookingId}`);
+    const response = await api.get(`/api/booked_service/${bookingId}`);
     bookServices.value = response.data;
     console.log(bookServices.value);
   } catch (error) {

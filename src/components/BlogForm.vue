@@ -192,7 +192,7 @@
 
 <script setup>
 import { onMounted, reactive, ref } from 'vue';
-import axios from 'axios';
+import api from '@/axios';
 import Actical_card from './Actical_card.vue';
 import BlogContent from './BlogContent.vue'; // Đảm bảo bạn đã import đúng component BlogContent
 import pdfCard from './pdfCard.vue';
@@ -232,7 +232,7 @@ const createPost = async () => {
         console.log('Không tìm thấy ID file trong URL.');
       }
     }
-    const response = await axios.post('/api/posts', formData);
+    const response = await api.post('/api/posts', formData);
     message.value = response.data.message;
     success.value = true;
   } catch (error) {
@@ -257,7 +257,7 @@ const togglePreviewCard = () => {
 
 const fetchAdmin = async () => {
   try {
-    const response = await axios.get(`/api/users/admin`);
+    const response = await api.get(`/api/users/admin`);
     admins.value = response.data;
   } catch (error) {
     console.error('Error fetching comments:', error);
@@ -266,7 +266,7 @@ const fetchAdmin = async () => {
 
 const fetchCategogy = async () => {
   try {
-    const response = await axios.get(`/api/categories`);
+    const response = await api.get(`/api/categories`);
     categories.value = response.data;
     formData.created_at = new Date().toISOString();
   } catch (error) {

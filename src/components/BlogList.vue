@@ -10,14 +10,14 @@
         >
           <div class="blog_card">
             <Actical_card
-              :image="blog.ImageUrl"
-              :title="blog.Title"
-              :description="blog.ContentIntro.slice(0, 100) + '...'"
-              :author="blog.Author"
-              :authorAvatar="blog.AuthorAvatar"
-              :views="blog.Views"
-              :id="blog.PostID"
-              :create_at="blog.CreatedAt"
+              :image="blog.imageurl"
+              :title="blog.title"
+              :description="blog.contentintro.slice(0, 100) + '...'"
+              :author="blog.author"
+              :authoravatar="blog.authoravatar"
+              :views="blog.views"
+              :id="blog.postid"
+              :create_at="blog.createdat"
             ></Actical_card>
           </div>
         </div>
@@ -63,7 +63,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, computed, reactive } from 'vue';
-import axios from 'axios';
+import api from '@/axios';
 import Actical_card from './Actical_card.vue';
 
 const blogs = ref([]); // Tất cả bài viết
@@ -123,7 +123,7 @@ const isAdmin = async () => {
 
 const fetchAdmin = async () => {
   try {
-    const response = await axios.get(`/api/users/admin`);
+    const response = await api.get(`/api/users/admin`);
     return response.data;
   } catch (error) {
     console.error('Error fetching comments:', error);
@@ -152,7 +152,7 @@ const changePage = (page, event) => {
 
 const fetchBlog = async () => {
   try {
-    await axios
+    await api
       .get('/api/posts', {
         params: { category_name: 'blog' },
       })

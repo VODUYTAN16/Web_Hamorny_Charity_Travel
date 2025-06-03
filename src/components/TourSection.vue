@@ -17,14 +17,14 @@
 <script setup>
 import { reactive, ref, onMounted } from 'vue';
 import Card_Tour from './Card_Tour.vue';
-import axios from 'axios';
+import api from '@/axios';
 
 const tours = ref([]);
 const props = defineProps({});
 
 const fetchTours = async () => {
   try {
-    const response = await axios.get(`/api/tour`);
+    const response = await api.get(`/api/tour`);
     console.log(response.data);
     tours.value = response.data.filter((tour) => tour.IsDeleted == 0).reverse();
     console.log(tours.value);

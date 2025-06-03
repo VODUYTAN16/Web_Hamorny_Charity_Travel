@@ -637,7 +637,7 @@ import Tour_Information from '@/components/Tour_Information.vue';
 import { computed, onMounted, reactive, ref, watch } from 'vue';
 import { useScreens } from 'vue-screen-utils';
 import { useRoute, onBeforeRouteUpdate } from 'vue-router';
-import axios, { all } from 'axios';
+import api from '@/axios';
 import { format } from 'date-fns';
 
 const route = useRoute();
@@ -825,7 +825,7 @@ const selectOption = (optionId, Quantity) => {
 const fetchScheduleTS = async (ScheduleID) => {
   try {
     const tourid = route.params.tourid;
-    const response = await axios.get(`/api/tour/${tourid}/${ScheduleID}`);
+    const response = await api.get(`/api/tour/${tourid}/${ScheduleID}`);
     if (response.status === 200) {
       response.data.forEach((item) => {
         scheduleTSData.value[item.ServiceID] = item; // Lưu trữ dữ liệu theo ServiceID
@@ -926,7 +926,7 @@ const removeSevenDaysAfterSelectedDate = async (datePicked) => {
 
 const fetchTourSchedule = async (tourid) => {
   try {
-    const response = await axios.get(`/api/tour/${tourid}/schedule`);
+    const response = await api.get(`/api/tour/${tourid}/schedule`);
     schedules.value = response.data;
     // Sắp xếp lại các ngày trong lịch trình theo chiều tăng dần
     schedules.value.sort(
@@ -957,7 +957,7 @@ const fetchTourSchedule = async (tourid) => {
 
 const fetchTourDetail = async (tourid) => {
   try {
-    const response = await axios.get(`/api/tour/${tourid}`);
+    const response = await api.get(`/api/tour/${tourid}`);
     tour.value = response.data;
     console.log(tour.value);
   } catch (error) {
@@ -967,7 +967,7 @@ const fetchTourDetail = async (tourid) => {
 
 const fetchTourService = async (tourid) => {
   try {
-    const response = await axios.get(`/api/tour/${tourid}/service`);
+    const response = await api.get(`/api/tour/${tourid}/service`);
     console.log(response.data);
     services.value = response.data;
   } catch (error) {
@@ -977,7 +977,7 @@ const fetchTourService = async (tourid) => {
 
 const fetchItyneraty = async (tourid) => {
   try {
-    const response = await axios.get(`/api/itinerary/${tourid}`);
+    const response = await api.get(`/api/itinerary/${tourid}`);
     console.log(response.data);
     itineraries.value = response.data;
   } catch (error) {
@@ -1074,7 +1074,7 @@ const createBooking = async () => {
         'yyyy-MM-dd HH:mm:ss'
       );
     });
-    const response = await axios.post('/api/create_booking', {
+    const response = await api.post('/api/create_booking', {
       Buyer: user.value,
       Participant: Participant,
       schedulePicked: schedulePicked.value,

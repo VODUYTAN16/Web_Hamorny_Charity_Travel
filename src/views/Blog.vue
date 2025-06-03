@@ -45,7 +45,7 @@ import BlogList from '@/components/BlogList.vue';
 import PdfViewer from '@/components/PdfViewer.vue';
 import BlogForm from '@/components/BlogForm.vue';
 import { onMounted, ref, reactive } from 'vue';
-import axios from 'axios';
+import api from '@/axios';
 
 const formData = reactive({
   admin: false,
@@ -74,7 +74,7 @@ const isAdmin = async () => {
 
 const fetchAdmin = async () => {
   try {
-    const response = await axios.get(`/api/users/admin`);
+    const response = await api.get(`/api/users/admin`);
     return response.data;
   } catch (error) {
     console.error('Error fetching comments:', error);

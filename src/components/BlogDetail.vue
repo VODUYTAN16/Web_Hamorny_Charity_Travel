@@ -107,7 +107,7 @@
 import { ref, onMounted, reactive } from 'vue';
 import { computed } from 'vue';
 import { useRoute, onBeforeRouteUpdate } from 'vue-router';
-import axios from 'axios';
+import api from '@/axios';
 import Navigate from './Navigate.vue';
 import Footer from './Footer.vue';
 import BlogContent from './BlogContent.vue';
@@ -158,7 +158,7 @@ const clearForm = () => {
 // Hàm gọi API
 const fetchBlog = async (postId) => {
   try {
-    const response = await axios.get(`/api/posts/${postId}`);
+    const response = await api.get(`/api/posts/${postId}`);
     blog.value = response.data;
     visibleCommentsCount.value = 3;
   } catch (error) {
@@ -168,7 +168,7 @@ const fetchBlog = async (postId) => {
 
 const fetchComments = async (postId) => {
   try {
-    const response = await axios.get(`/api/posts/${postId}/comments`);
+    const response = await api.get(`/api/posts/${postId}/comments`);
     comments.value = response.data.reverse();
   } catch (error) {
     console.error('Error fetching comments:', error);
@@ -196,7 +196,7 @@ const addComment = async () => {
       alert('Vui long dang nhap');
       return;
     }
-    const response = await axios.post(
+    const response = await api.post(
       `/api/posts/${postId}/comments`,
       newComment.value
     );
@@ -221,7 +221,7 @@ async function deleteComment(commentId, authorId) {
   try {
     const postId = route.params.id;
     // Gửi request DELETE đến API
-    const response = await axios.delete(
+    const response = await api.delete(
       `/api/posts/${postId}/comments/${commentId}`,
       {
         data: {
@@ -254,7 +254,7 @@ async function deleteComment(commentId, authorId) {
 
 const fetchRelatedArticles = async () => {
   try {
-    const response = await axios.get('/api/posts/related');
+    const response = await api.get('/api/posts/related');
     relatedArticles.value = response.data;
   } catch (error) {
     console.error('Error fetching related articles:', error);
