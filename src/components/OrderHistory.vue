@@ -76,12 +76,12 @@
                 class="list-group-item d-flex justify-content-between align-items-center"
               >
                 <div>
-                  <h5 class="mb-1">{{ item.TourName }}</h5>
+                  <h5 class="mb-1">{{ item.tourname }}</h5>
                   <p class="mb-1 text-muted">
-                    Booking Date: {{ formatDate(item.BookingDate) }}
+                    Booking Date: {{ formatDate(item.bookingdate) }}
                   </p>
-                  <span :class="getStatusClass(item.Status)">
-                    {{ item.Status }}
+                  <span :class="getStatusClass(item.status)">
+                    {{ item.status }}
                   </span>
                 </div>
                 <button
@@ -91,7 +91,7 @@
                   data-bs-target="#exampleModal"
                   @click="
                     getDetailOfSpecificedBooking(item),
-                      bookedServices(item.BookingID)
+                      bookedServices(item.bookingid)
                   "
                 >
                   Detail
@@ -128,14 +128,14 @@
                     <div class="row">
                       <div class="col">
                         <h5 class="text-success">Info Of Tour</h5>
-                        <h6>Name of tour: {{ BookingDetail[0].TourName }}</h6>
-                        <h6>Price of tour: ${{ BookingDetail[0].Price }}</h6>
+                        <h6>Name of tour: {{ BookingDetail[0].tourname }}</h6>
+                        <h6>Price of tour: ${{ BookingDetail[0].price }}</h6>
 
                         <h6>
                           Start Date:
                           {{
                             new Date(
-                              BookingDetail[0].StartDate
+                              BookingDetail[0].startdate
                             ).toLocaleDateString('en-US', {
                               year: 'numeric',
                               month: 'long',
@@ -147,9 +147,9 @@
                           End Date:
                           {{
                             new Date(
-                              new Date(BookingDetail[0].StartDate).setDate(
-                                new Date(BookingDetail[0].StartDate).getDate() +
-                                  BookingDetail[0].Duration -
+                              new Date(BookingDetail[0].startdate).setDate(
+                                new Date(BookingDetail[0].startdate).getDate() +
+                                  BookingDetail[0].duration -
                                   1
                               )
                             ).toLocaleDateString('en-US', {
@@ -162,15 +162,15 @@
                       </div>
                       <div class="col">
                         <h5 class="text-success">Whose Booking</h5>
-                        <h6>FullName: {{ BookingDetail[0].FullName }}</h6>
+                        <h6>FullName: {{ BookingDetail[0].fullname }}</h6>
                         <h6>
-                          Phone Number: {{ BookingDetail[0].PhoneNumber }}
+                          Phone Number: {{ BookingDetail[0].phonenumber }}
                         </h6>
                         <h6>
                           Booking Date:
                           {{
                             new Date(
-                              BookingDetail[0].BookingDate
+                              BookingDetail[0].bookingdate
                             ).toLocaleDateString('en-US', {
                               year: 'numeric',
                               month: 'long',
@@ -183,7 +183,7 @@
                         </h6>
                         <h6>
                           Number of participant:
-                          {{ BookingDetail[0].NumberOfGuests }}
+                          {{ BookingDetail[0].numberofguests }}
                         </h6>
                         <h6>
                           <span class="fst-italic text-nowrap">
@@ -195,17 +195,17 @@
                           <span class="fst-italic text-nowrap"
                             >Trip Price:</span
                           >
-                          ${{ BookingDetail[0].Price }} *
-                          {{ BookingDetail[0].NumberOfGuests }} = ${{
-                            BookingDetail[0].Price *
-                            BookingDetail[0].NumberOfGuests
+                          ${{ BookingDetail[0].price }} *
+                          {{ BookingDetail[0].numberofguests }} = ${{
+                            BookingDetail[0].price *
+                            BookingDetail[0].numberofguests
                           }}
                         </h6>
                         <h6>
                           <span class="fst-italic text-nowrap"
                             >Total Amount:</span
                           >
-                          ${{ BookingDetail[0].TotalAmount }}
+                          ${{ BookingDetail[0].totalamount }}
                         </h6>
                       </div>
                       <div class="col">
@@ -229,10 +229,10 @@
                               :key="index"
                             >
                               <td>{{ index + 1 }}</td>
-                              <td>{{ service.ServiceName }}</td>
-                              <td>${{ service.Price }}</td>
-                              <td>{{ service.Quantity }}</td>
-                              <td>${{ service.Quantity * service.Price }}</td>
+                              <td>{{ service.servicename }}</td>
+                              <td>${{ service.price }}</td>
+                              <td>{{ service.quantity }}</td>
+                              <td>${{ service.quantity * service.price }}</td>
                             </tr>
                             <tr
                               v-if="bookServices && bookServices.length === 0"
@@ -264,10 +264,10 @@
                       <tbody>
                         <tr v-for="(item, index) in BookingDetail" :key="index">
                           <td>{{ index + 1 }}</td>
-                          <td>{{ item.FullName }}</td>
+                          <td>{{ item.fullname }}</td>
                           <td>
                             {{
-                              new Date(item.DateOfBirth).toLocaleDateString(
+                              new Date(item.dateofbirth).toLocaleDateString(
                                 'en-US',
                                 {
                                   year: 'numeric',
@@ -277,12 +277,12 @@
                               )
                             }}
                           </td>
-                          <td>{{ item.Gender }}</td>
-                          <td>{{ item.Email }}</td>
-                          <td>{{ item.PhoneNumber }}</td>
-                          <td>{{ item.FullNameOnPassport }}</td>
-                          <td>{{ item.PassportNumber }}</td>
-                          <td>{{ item.Nationality }}</td>
+                          <td>{{ item.gender }}</td>
+                          <td>{{ item.email }}</td>
+                          <td>{{ item.phonenumber }}</td>
+                          <td>{{ item.fullnameonpassport }}</td>
+                          <td>{{ item.passportnumber }}</td>
+                          <td>{{ item.nationality }}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -316,10 +316,10 @@ import Footer from './Footer.vue';
 
 const getStatusClass = (status) => {
   const statusClassMap = {
-    Psending: 'badge bg-light',
-    Booked: 'badge bg-success',
-    Cancelled: 'badge bg-danger',
-    Paid: 'badge bg-primary',
+    spending: 'badge bg-light',
+    booked: 'badge bg-success',
+    cancelled: 'badge bg-danger',
+    paid: 'badge bg-primary',
   };
   return statusClassMap[status] || 'badge bg-secondary';
 };
@@ -330,12 +330,12 @@ const formatDate = (dateString) => {
 };
 
 const Filter = reactive({
-  StartDate: '',
-  EndDate: '',
-  TourID: '',
-  Status: '',
-  TourName: '', // Thêm trường mới
-  BookingID: '',
+  startdate: '',
+  enddate: '',
+  tourid: '',
+  status: '',
+  tourname: '', // Thêm trường mới
+  bookingid: '',
 });
 
 const currentStep = ref(1);
@@ -354,10 +354,10 @@ const removeDiacritics = (str) => {
 
 const filter = (Filter) => {
   console.log(Filter);
-  const query = removeDiacritics(Filter.TourName || '').trim();
+  const query = removeDiacritics(Filter.tourname || '').trim();
 
   const filteredBookings = bookings.value.filter((booking) => {
-    const tourName = removeDiacritics(booking.TourName).trim();
+    const tourName = removeDiacritics(booking.tourname).trim();
     const queryWords = query.split(/\s+/); // Tách từ theo khoảng trắng
     const tourWords = tourName.split(/\s+/);
 
@@ -367,17 +367,17 @@ const filter = (Filter) => {
     );
 
     return (
-      (!Filter.TourID ||
-        Filter.TourID == -1 ||
-        booking.TourID == Filter.TourID) &&
-      (!Filter.Status ||
-        Filter.Status === 'All' ||
-        booking.Status === Filter.Status) &&
-      (!Filter.StartDate ||
-        new Date(booking.StartDate) >= new Date(Filter.StartDate)) &&
-      (!Filter.EndDate ||
-        new Date(booking.EndDate) <= new Date(Filter.EndDate)) &&
-      (!Filter.TourName || matchEachWord) // Chỉ lọc theo tên nếu có TourName
+      (!Filter.tourid ||
+        Filter.tourid == -1 ||
+        booking.tourid == Filter.tourid) &&
+      (!Filter.status ||
+        Filter.status === 'All' ||
+        booking.status === Filter.status) &&
+      (!Filter.startdate ||
+        new Date(booking.startdate) >= new Date(Filter.startdate)) &&
+      (!Filter.enddate ||
+        new Date(booking.enddate) <= new Date(Filter.enddate)) &&
+      (!Filter.tourname || matchEachWord) // Chỉ lọc theo tên nếu có tourname
     );
   });
   console.log('filteredBookings: ', filteredBookings);
@@ -387,23 +387,23 @@ const filter = (Filter) => {
 const fetchUser = () => {
   const userData = JSON.parse(localStorage.getItem('user'));
   if (userData) {
-    fetchBookings(userData.UserID);
+    fetchBookings(userData.userid);
   }
 };
 
-const fetchBookings = async (userID) => {
+const fetchBookings = async (userid) => {
   try {
-    const response = await api.get(`/api/booking/${userID}`);
+    const response = await api.get(`/api/booking/${userid}`);
     bookings.value = response.data.reverse();
-    console.log(userID);
+    console.log(userid);
     console.log('bookings: ', bookings.value);
     bookings.value.map((item) => {
-      item.StartDate = new Date(item.StartDate).toLocaleDateString('en-US', {
+      item.startdate = new Date(item.startdate).toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
       });
-      item.EndDate = new Date(item.EndDate).toLocaleDateString('en-US', {
+      item.enddate = new Date(item.enddate).toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
@@ -412,8 +412,8 @@ const fetchBookings = async (userID) => {
     tourNameList.value = [
       ...new Map(
         bookings.value.map((booking) => [
-          booking.TourID,
-          { TourID: booking.TourID, TourName: booking.TourName },
+          booking.tourid,
+          { tourid: booking.tourid, tourname: booking.tourname },
         ])
       ).values(),
     ];
@@ -424,16 +424,16 @@ const fetchBookings = async (userID) => {
 
 const getDetailOfSpecificedBooking = async (booking) => {
   try {
-    const response = await api.get(`/api/detail_booking/${booking.BookingID}`);
+    const response = await api.get(`/api/detail_booking/${booking.bookingid}`);
     BookingDetail.value = response.data;
   } catch (err) {
     console.log('err of getDetailOfSpecificedBooking', err);
   }
 };
 
-const bookedServices = async (bookingId) => {
+const bookedServices = async (bookingid) => {
   try {
-    const response = await api.get(`/api/booked_service/${bookingId}`);
+    const response = await api.get(`/api/booked_service/${bookingid}`);
     bookServices.value = response.data;
     console.log(bookServices.value);
   } catch (error) {
@@ -443,7 +443,7 @@ const bookedServices = async (bookingId) => {
 
 const ServicePriceTotal = (bookServices) => {
   return bookServices.reduce((acc, service) => {
-    return acc + service.Price * service.Quantity;
+    return acc + service.price * service.quantity;
   }, 0);
 };
 
