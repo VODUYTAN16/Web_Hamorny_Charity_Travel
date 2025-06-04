@@ -18,7 +18,7 @@
     <div class="card-footer d-flex justify-content-between align-items-center">
       <div class="d-flex align-items-center">
         <img
-          :src="authorAvatar"
+          :src="authoravatar"
           alt="Author Avatar"
           class="rounded-circle me-2"
           style="width: 32px; height: 32px"
@@ -66,7 +66,7 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  authorAvatar: {
+  authoravatar: {
     type: String,
     required: true,
   },
@@ -74,7 +74,7 @@ const props = defineProps({
     type: Number,
     required: true,
   },
-  create_at: {
+  createat: {
     type: String,
     default: 'a few seconds ago',
   },
@@ -82,7 +82,7 @@ const props = defineProps({
 
 const timeAgo = computed(() => {
   const currentTime = new Date();
-  const createdTime = new Date(props.create_at);
+  const createdTime = new Date(props.createat);
   const diffInSeconds = Math.floor((currentTime - createdTime) / 1000); // Chênh lệch tính bằng giây
 
   // Tính toán sự khác biệt và trả về chuỗi tương ứng

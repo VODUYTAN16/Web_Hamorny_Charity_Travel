@@ -18,7 +18,7 @@
               <label for="name" class="form-label">Tên của bạn</label>
               <input
                 id="name"
-                v-model="newComment.author_name"
+                v-model="newComment.authorname"
                 class="form-control"
                 placeholder="Nhập tên của bạn"
                 required
@@ -47,9 +47,9 @@
               <div class="comment">
                 <Comment :comment="comment" />
                 <button
-                  v-if="state.userId === comment.AuthorID"
+                  v-if="state.userid === comment.authorid"
                   class="btn btn-link text-danger p-0 mt-2"
-                  @click="deleteComment(comment.CommentID, state.userId)"
+                  @click="deleteComment(comment.commentid, state.userid)"
                 >
                   <i class="fa-solid fa-rectangle-xmark fs-5"></i>
                 </button>
@@ -85,14 +85,14 @@
               class="col-md-4 mb-4"
             >
               <Actical_card
-                :image="article.ImageUrl"
-                :title="article.Title"
-                :description="article.ContentIntro"
-                :author="article.Author"
-                :authorAvatar="article.AuthorAvatar"
-                :views="article.Views"
-                :id="article.PostID"
-                :create_at="article.CreatedAt"
+                :image="article.imageurl"
+                :title="article.title"
+                :description="article.contentintro"
+                :author="article.author"
+                :authoravatar="article.authoravatar"
+                :views="article.views"
+                :id="article.postid"
+                :createat="article.createdat"
               ></Actical_card>
             </div>
           </div>
@@ -116,15 +116,15 @@ import Comment from './Comment.vue';
 import { AnnotationLayer } from 'pdfjs-dist';
 
 const state = reactive({
-  userId: 0,
+  userid: 0,
 });
 // Khai báo biến và dữ liệu
 const blog = ref({});
 const comments = ref([]);
 const newComment = ref({
-  author_name: '',
+  authorname: '',
   content: '',
-  author_avatar: '',
+  authoravatar: '',
   email: '',
 });
 const relatedArticles = ref([]);
@@ -178,13 +178,13 @@ const fetchComments = async (postId) => {
 const fetchUser = () => {
   const userData = JSON.parse(localStorage.getItem('user'));
   if (userData) {
-    newComment.value.author_id = userData.UserID;
-    newComment.value.author_avatar = userData.ImageAvatar;
-    newComment.value.email = userData.Email;
-    state.userId = userData.UserID;
+    newComment.value.authorid = userData.userid;
+    newComment.value.authoravatar = userData.imageavatar;
+    newComment.value.email = userData.email;
+    state.userid = userData.userid;
   } else {
-    newComment.value.author_id = '';
-    newComment.value.author_avatar = '';
+    newComment.value.authorid = '';
+    newComment.value.authoravatar = '';
     newComment.value.email = '';
   }
 };
@@ -211,7 +211,7 @@ const addComment = async () => {
   }
 };
 
-async function deleteComment(commentId, authorId) {
+async function deleteComment(commentId, authorid) {
   const confirmDelete = confirm(
     'Are you sure you want to delete this comment?'
   );
@@ -225,7 +225,7 @@ async function deleteComment(commentId, authorId) {
       `/api/posts/${postId}/comments/${commentId}`,
       {
         data: {
-          author_id: authorId, // Truyền author_id trong phần body
+          authorid: authorid, // Truyền authorid trong phần body
         },
       }
     );
